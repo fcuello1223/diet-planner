@@ -1,16 +1,24 @@
+import { useContext, useState } from "react";
 import { View, Text, Image, Alert } from "react-native";
 import { Link } from "expo-router";
+import { useMutation } from "convex/react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
+import { auth } from "../../services/FirebaseConfig";
+import { api } from '../../convex/_generated/api';
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../services/FirebaseConfig";
+import { UserContext } from "../../context/UserContext";
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const createNewUser = useMutation(api.Users.CreateNewUser);
+
+  const { user, setUser } = useContext(UserContext);
+
 
   const onSignUp = () => {
     if (!name || !email || !password) {
@@ -22,10 +30,20 @@ export default function SignUp() {
     }
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
 
         console.log(user);
+        
+
+        if (user) {
+          const newUser = await createNewUser({ name: name, email: email });
+
+          console.log(newUser);
+          
+
+          setUser(newUser); 
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
