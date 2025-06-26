@@ -29,6 +29,8 @@ export default function Index() {
       console.log(userData);
 
       setUser(userData);
+
+      router.replace('/(tabs)/Home');
     });
 
     return () => unsubscribe();
