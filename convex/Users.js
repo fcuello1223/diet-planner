@@ -39,7 +39,27 @@ export const GetUser = query({
       .query("Users")
       .filter((q) => q.eq(q.field("email"), args.email))
       .collect();
-    
+
     return user[0];
+  },
+});
+
+export const UpdateUserPreference = mutation({
+  args: {
+    uid: v.id("Users"),
+    height: v.string(),
+    weight: v.string(),
+    gender: v.string(),
+    goal: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db.patch(args.uid, {
+      height: args.height,
+      weight: args.weight,
+      gender: args.gender,
+      goal: args.goal,
+    });
+
+    return result;
   },
 });
