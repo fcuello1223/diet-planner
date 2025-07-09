@@ -16,7 +16,7 @@ import { UserContext } from "../../context/UserContext";
 import Colors from "../../shared/Colors";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { calculateCalories } from "../../services/AiModel";
+import { calculateCaloriesAI } from "../../services/AiModel";
 import Prompt from "../../shared/Prompt";
 
 export default function Preference() {
@@ -48,7 +48,7 @@ export default function Preference() {
     //Calculate Calories Using AI
     const prompt = JSON.stringify(data) + Prompt.CALORIES_PROMPT;
 
-    const result = await calculateCalories(prompt);
+    const result = await calculateCaloriesAI(prompt);
     
     const response = result.choices[0].message.content;
 
