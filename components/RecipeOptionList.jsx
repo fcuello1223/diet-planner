@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useMutation } from "convex/react";
+import { useRouter } from "expo-router";
 
 import { generateRecipeAI, generateRecipeImage } from "../services/AiModel";
 import { api } from "../convex/_generated/api";
@@ -16,6 +17,8 @@ export default function RecipeOptionList({ recipeOption }) {
   const createRecipe = useMutation(api.Recipes.createRecipe);
 
   const { user } = useContext(UserContext);
+
+  const router = useRouter();
 
   const onRecipeOptionSelect = async (recipe) => {
     setLoading(true);
@@ -35,13 +38,10 @@ export default function RecipeOptionList({ recipeOption }) {
 
       const parsedJSON = JSON.parse(extractedJSON);
 
-      console.log(parsedJSON);
-
       setLoading(false);
 
       //Generate Recipe Image
       const imageResponse = await generateRecipeImage(parsedJSON?.imagePrompt);
-      console.log(imageResponse?.data?.image);
 
       //Save to Database
       const savedRecipe = await createRecipe({
@@ -51,10 +51,9 @@ export default function RecipeOptionList({ recipeOption }) {
         uid: user?._id,
       });
 
-      console.log(savedRecipe);
-      
+      setLoading(false);
 
-      //Redirect to Recipe Details Screen
+      router.push(`/recipe-detail?recipeId=${savedRecipe}`);
     } catch (error) {
       setLoading(false);
       console.log(error);

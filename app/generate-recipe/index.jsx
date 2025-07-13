@@ -24,8 +24,6 @@ export default function GenerateRecipe() {
       const extractedJSON = (result.choices[0].message.content).replace('```json', '').replace('```', '');
       const parsedJSON = JSON.parse(extractedJSON);
 
-      console.log(parsedJSON);
-
       setRecipeOption(parsedJSON);
       setLoading(false);
     } catch (error) {

@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 export const createRecipe = mutation({
   args: {
@@ -18,5 +18,17 @@ export const createRecipe = mutation({
     });
 
     return result;
+  },
+});
+
+export const getRecipeById = query({
+  args: { id: v.id("Recipes") },
+  handler: async (ctx, args) => {
+    console.log("Fetching recipe with ID:", args.id);
+    const recipe = await ctx.db.get(args.id);
+    if (!recipe) {
+      console.log("⚠️ No recipe found!");
+    }
+    return recipe;
   },
 });

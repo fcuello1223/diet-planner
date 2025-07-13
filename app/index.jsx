@@ -19,14 +19,12 @@ export default function Index() {
   const convex = useConvex();
 
   useEffect(() => {
+
     const unsubscribe = onAuthStateChanged(auth, async (userInfo) => {
-      console.log(userInfo?.email);
 
       const userData = await convex.query(api.Users.GetUser, {
         email: userInfo?.email,
       });
-
-      console.log(userData);
 
       setUser(userData);
 

@@ -5,7 +5,7 @@ import { useMutation } from "convex/react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import { auth } from "../../services/FirebaseConfig";
-import { api } from '../../convex/_generated/api';
+import { api } from "../../convex/_generated/api";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { UserContext } from "../../context/UserContext";
@@ -18,7 +18,6 @@ export default function SignUp() {
   const createNewUser = useMutation(api.Users.CreateNewUser);
 
   const { user, setUser } = useContext(UserContext);
-
 
   const onSignUp = () => {
     if (!name || !email || !password) {
@@ -33,16 +32,10 @@ export default function SignUp() {
       .then(async (userCredential) => {
         const user = userCredential.user;
 
-        console.log(user);
-        
-
         if (user) {
           const newUser = await createNewUser({ name: name, email: email });
 
-          console.log(newUser);
-          
-
-          setUser(newUser); 
+          setUser(newUser);
         }
       })
       .catch((error) => {

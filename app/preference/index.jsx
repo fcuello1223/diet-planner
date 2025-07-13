@@ -53,8 +53,6 @@ export default function Preference() {
     const response = result.choices[0].message.content;
 
     const JSONContent = JSON.parse(response.replace('```json', '').replace('```', ''));
-
-    console.log(JSONContent);
     
     await UpdateUserPreference({
       ...data,
